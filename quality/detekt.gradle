@@ -1,0 +1,15 @@
+apply plugin: "io.gitlab.arturbosch.detekt"
+
+detekt {
+    failFast = true
+    buildUponDefaultConfig = true
+    config = files("$rootDir/quality/config/detekt/detekt.yml")
+    //baseline = file("$rootDir/quality/config/detekt/baseline.xml")
+    parallel = true
+
+    reports {
+        html.enabled = true
+        xml.enabled = false
+        txt.enabled = false
+    }
+}

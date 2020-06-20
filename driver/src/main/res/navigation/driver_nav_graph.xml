@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/driver_nav_graph"
+    app:startDestination="@id/arrivedFragment">
+
+    <fragment
+        android:id="@+id/arrivedFragment"
+        android:name="com.sailer.driver.presentation.arrived.view.ArrivedFragment"
+        android:label="ArrivedFragment"
+        tools:layout="@layout/fragment_arrived" />
+
+    <fragment
+        android:id="@+id/dropPinMapFragment"
+        android:name="com.sailer.map.view.DropPinMapFragment"
+        android:label="DropPinMapFragment"
+        tools:layout="@layout/fragment_drop_pin_map" />
+</navigation>

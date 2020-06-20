@@ -1,0 +1,48 @@
+import dependencies.Dependencies
+
+apply from: "$rootDir/config/android.gradle"
+
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+dependencies {
+    implementation project(":core")
+    implementation project(":map")
+
+    implementation Dependencies.Kotlin.stdlib
+
+    implementation Dependencies.AndroidX.appcompat
+    implementation Dependencies.AndroidX.fragment
+    implementation Dependencies.AndroidX.ktx
+    implementation Dependencies.AndroidX.constraintlayout
+
+    implementation Dependencies.Google.material
+
+    implementation Dependencies.Jetpack.lifecycle
+    implementation Dependencies.Jetpack.navigationUi
+    implementation Dependencies.Jetpack.navigationFragment
+
+    implementation Dependencies.Dagger.dagger
+    kapt Dependencies.Dagger.daggerCompiler
+    compileOnly Dependencies.Dagger.assistedInject
+    kapt Dependencies.Dagger.assistedInjectCompiler
+
+    implementation Dependencies.Rx.java
+
+    implementation Dependencies.Util.timber
+
+    debugImplementation Dependencies.AndroidX.fragmentTesting
+
+    testImplementation Dependencies.Test.junit
+    testImplementation Dependencies.Test.core
+    testImplementation Dependencies.Test.arch
+    testImplementation Dependencies.Test.robolectric
+    testImplementation Dependencies.Test.mockitoKotlin
+
+    androidTestImplementation Dependencies.AndroidTest.runner
+    androidTestImplementation Dependencies.AndroidTest.espresso
+    androidTestImplementation Dependencies.AndroidTest.rules
+    androidTestImplementation Dependencies.AndroidTest.truth
+    androidTestImplementation Dependencies.AndroidTest.junit
+    androidTestImplementation Dependencies.Test.arch
+    androidTestImplementation Dependencies.AndroidTest.mockitoAndroid
+}

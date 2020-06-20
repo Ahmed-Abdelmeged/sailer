@@ -1,0 +1,27 @@
+import dependencies.Dependencies
+
+apply from: "$rootDir/config/android.gradle"
+
+dependencies {
+    implementation project(":core")
+
+    implementation Dependencies.Kotlin.stdlib
+
+    implementation Dependencies.AndroidX.appcompat
+    implementation Dependencies.AndroidX.fragment
+    implementation Dependencies.AndroidX.ktx
+
+    implementation Dependencies.Google.material
+
+    implementation Dependencies.Jetpack.lifecycle
+
+    implementation Dependencies.Dagger.dagger
+    kapt Dependencies.Dagger.daggerCompiler
+
+    implementation Dependencies.Rx.java
+
+    testImplementation Dependencies.Test.junit
+
+    androidTestImplementation Dependencies.AndroidTest.runner
+    androidTestImplementation Dependencies.AndroidTest.espresso
+}

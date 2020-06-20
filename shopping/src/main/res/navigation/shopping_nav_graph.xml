@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shopping_nav_graph"
+    app:startDestination="@id/productsFragment"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.sailer.shopping.presentation.product.view.ProductsFragment"
+        android:label="ProductsFragment"
+        tools:layout="@layout/fragment_products">
+        <argument
+            android:name="categoryId"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.sailer.shopping.presentation.search.view.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search" />
+
+</navigation>

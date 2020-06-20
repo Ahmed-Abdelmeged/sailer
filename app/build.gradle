@@ -1,0 +1,108 @@
+import dependencies.Dependencies
+
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion Config.compileSdk
+
+    defaultConfig {
+        applicationId "com.sailer"
+
+        minSdkVersion Config.minSdk
+        targetSdkVersion Config.targetSdk
+        versionCode Build.versionCode
+        versionName Build.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+    compileOptions {
+        sourceCompatibility Config.javaVersion
+        targetCompatibility Config.javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = Config.javaVersion.toString()
+    }
+
+    flavorDimensions "role"
+
+    productFlavors {
+        rider {
+            dimension "role"
+            versionNameSuffix "-rider"
+            applicationIdSuffix ".rider"
+        }
+
+        driver {
+            dimension "role"
+            versionNameSuffix "-driver"
+            applicationIdSuffix ".driver"
+        }
+    }
+
+    buildTypes {
+        debug {
+
+        }
+
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    riderImplementation project(":rider")
+    driverImplementation project(":driver")
+
+    implementation project(":core")
+    implementation project(":auth")
+
+    implementation Dependencies.Kotlin.stdlib
+
+    implementation Dependencies.AndroidX.ktx
+    implementation Dependencies.AndroidX.fragment
+    implementation Dependencies.AndroidX.appcompat
+
+    implementation Dependencies.Jetpack.lifecycle
+    implementation Dependencies.Jetpack.navigationUi
+    implementation Dependencies.Jetpack.navigationFragment
+
+    implementation Dependencies.Google.material
+
+    implementation Dependencies.Dagger.dagger
+    kapt Dependencies.Dagger.daggerCompiler
+
+    implementation Dependencies.Rx.java
+    implementation Dependencies.Rx.android
+
+    implementation Dependencies.Util.timber
+
+    testImplementation Dependencies.Test.junit
+    testImplementation Dependencies.Test.arch
+    testImplementation Dependencies.Test.mockitoKotlin
+    testImplementation Dependencies.Test.robolectric
+
+    androidTestImplementation Dependencies.AndroidTest.runner
+    androidTestImplementation Dependencies.AndroidTest.espresso
+    androidTestImplementation Dependencies.AndroidTest.rules
+    androidTestImplementation Dependencies.AndroidTest.truth
+    androidTestImplementation Dependencies.AndroidTest.junit
+}

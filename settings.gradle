@@ -1,0 +1,7 @@
+rootProject.name = "sailer"
+include ':app'
+include ':core'
+include ':actions'
+include ':auth', ':shopping', ':map'
+include ':driver', ':rider'
+include ':app'

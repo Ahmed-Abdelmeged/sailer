@@ -1,0 +1,7 @@
+import dependencies.Dependencies
+
+apply from: "$rootDir/config/android.gradle"
+
+dependencies {
+    implementation Dependencies.Kotlin.stdlib
+}
