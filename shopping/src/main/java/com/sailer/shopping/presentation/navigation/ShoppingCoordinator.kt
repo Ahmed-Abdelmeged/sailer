@@ -1,69 +1,56 @@
 package com.sailer.shopping.presentation.navigation
 
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.navArgs
 import com.sailer.core.di.scopes.FeatureScope
 import com.sailer.core.navigation.Coordinator
-import com.sailer.core.navigation.Displayable
 import com.sailer.core.navigation.FeatureNavigator
+import com.sailer.core.navigation.GlobalCoordinatorEvent
 import com.sailer.core.navigation.StartDestination
 import com.sailer.shopping.R
-import com.sailer.shopping.presentation.product.view.ProductsFragment
 import com.sailer.shopping.presentation.product.view.ProductsFragmentArgs
-import com.sailer.shopping.presentation.product.viewmodel.ProductsViewModelFactory
-import com.sailer.shopping.presentation.search.view.SearchFragment
-import com.sailer.shopping.presentation.search.viewmodel.SearchViewModelFactory
-import dagger.Lazy
-import javax.inject.Inject
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 
 /**
  * Created by Ahmed Abd-Elmeged on 5/5/20.
  */
 @FeatureScope
-class ShoppingCoordinator @Inject constructor(
+class ShoppingCoordinator @AssistedInject constructor(
     featureNavigator: FeatureNavigator,
-    private val productsViewModelFactory: Lazy<ProductsViewModelFactory.Factory>,
-    private val searchViewModelFactory: Lazy<SearchViewModelFactory.Factory>
+    @Assisted private val categoryId: Long
 ) : Coordinator(featureNavigator) {
 
-    fun start(categoryId: Long): StartDestination {
+    override fun onStart(): StartDestination {
         val args = ProductsFragmentArgs(categoryId = categoryId).toBundle()
         return StartDestination(R.id.productsFragment, args)
     }
 
-    override fun onCreateViewModelFactory(screen: Displayable): ViewModelProvider.Factory {
-        return when (screen) {
-            is ProductsFragment -> {
-                val args = screen.navArgs<ProductsFragmentArgs>().value
-                productsViewModelFactory.get().create(
-                    categoryId = args.categoryId
-                )
-            }
-
-            is SearchFragment -> searchViewModelFactory.get().create()
-
-            else -> throw IllegalArgumentException("Not supported fragment for the current coordinator")
-        }
-    }
-
-    override fun onEvent(event: Any) {
-        when (event) {
-            is ShoppingCoordinatorEvent.Back -> back()
+    override fun onEvent(event: Any): Boolean {
+        return when (event) {
+            is GlobalCoordinatorEvent.Back -> navController?.popBackStack() == true
 
             is ShoppingCoordinatorEvent.Search -> search()
 
             is ShoppingCoordinatorEvent.Products -> products(
                 categoryId = event.categoryId
             )
+
+            else -> false
         }
     }
 
-    private fun products(categoryId: Long) {
+    private fun products(categoryId: Long): Boolean {
         val args = ProductsFragmentArgs(categoryId = categoryId).toBundle()
         navController?.navigate(R.id.productsFragment, args)
+        return true
     }
 
-    private fun search() {
+    private fun search(): Boolean {
         navController?.navigate(R.id.searchFragment)
+        return true
+    }
+
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(categoryId: Long): ShoppingCoordinator
     }
 }

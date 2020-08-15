@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import com.sailer.core.base.view.BaseActivity
 import com.sailer.core.di.provideCoreComponent
 import com.sailer.core.di.scopedComponent
-import com.sailer.core.navigation.StartDestination
 import com.sailer.rider.R
 import com.sailer.rider.databinding.ActivityRiderBinding
 import com.sailer.rider.di.DaggerRiderComponent
@@ -29,6 +28,8 @@ class RiderActivity : BaseActivity<ActivityRiderBinding, RiderCoordinator>() {
 
     override val coordinator: RiderCoordinator get() = riderCoordinator
 
+    override val theme: Int = R.style.AppTheme
+
     override val graph: Int = R.navigation.rider_nav_graph
 
     override val navHostId: Int = R.id.navHost
@@ -39,9 +40,5 @@ class RiderActivity : BaseActivity<ActivityRiderBinding, RiderCoordinator>() {
 
     override fun onCreateBinding(inflater: LayoutInflater): ActivityRiderBinding {
         return ActivityRiderBinding.inflate(inflater)
-    }
-
-    override fun onStartDestination(): StartDestination {
-        return coordinator.start()
     }
 }

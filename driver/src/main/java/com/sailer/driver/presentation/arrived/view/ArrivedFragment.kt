@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.setFragmentResultListener
 import com.sailer.core.base.view.BaseFragment
 import com.sailer.core.extension.exhaustive
-import com.sailer.core.extension.hostedViewModel
 import com.sailer.core.extension.shortSnackbar
+import com.sailer.core.extension.viewModelWithProvider
 import com.sailer.driver.R
 import com.sailer.driver.databinding.FragmentArrivedBinding
 import com.sailer.driver.presentation.arrived.viewmodel.ArrivedViewModel
@@ -17,18 +17,22 @@ import com.sailer.driver.presentation.arrived.viewstate.ArrivedViewEvent
 import com.sailer.driver.presentation.arrived.viewstate.ArrivedViewState
 import com.sailer.map.model.Location
 import com.sailer.map.view.MapRequestKeys
+import javax.inject.Inject
+import javax.inject.Provider
 
 /**
  * Created by Ahmed Abd-Elmeged on 6/5/20.
  */
-class ArrivedFragment : BaseFragment<
+class ArrivedFragment @Inject constructor(
+    private val viewModelProvider: Provider<ArrivedViewModel>
+) : BaseFragment<
         ArrivedViewState,
         ArrivedViewEvent,
         ArrivedViewAction,
         ArrivedViewModel,
         FragmentArrivedBinding>() {
 
-    override val viewModel: ArrivedViewModel by hostedViewModel()
+    override val viewModel: ArrivedViewModel by viewModelWithProvider { viewModelProvider.get() }
 
     override val theme: Int = R.style.AppTheme
 

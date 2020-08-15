@@ -10,4 +10,11 @@
         android:name="com.sailer.rider.presentation.home.view.HomeFragment"
         android:label="ArrivedFragment"
         tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/shoppingFragment"
+        android:name="com.sailer.shopping.presentation.view.ShoppingHostFragment"
+        android:label="ShoppingHostFragment"
+        tools:layout="@layout/fragment_shopping_host" />
+
 </navigation>

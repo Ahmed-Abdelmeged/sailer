@@ -7,8 +7,6 @@ import com.sailer.core.navigation.CoordinatorEvent
  */
 sealed class ShoppingCoordinatorEvent : CoordinatorEvent {
 
-    object Back : ShoppingCoordinatorEvent()
-
     object Search : ShoppingCoordinatorEvent()
 
     data class Products(val categoryId: Long) : ShoppingCoordinatorEvent()

@@ -8,6 +8,4 @@ import com.sailer.core.navigation.CoordinatorEvent
 sealed class RiderCoordinatorEvent : CoordinatorEvent {
 
     object Shopping : RiderCoordinatorEvent()
-
-    object Back : RiderCoordinatorEvent()
 }

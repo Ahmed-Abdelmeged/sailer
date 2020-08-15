@@ -1,11 +1,13 @@
 package com.sailer.sailer.app
 
 import android.app.Application
-import android.os.StrictMode
+import com.sailer.auth.di.DaggerAuthComponent
 import com.sailer.core.di.CoreComponent
 import com.sailer.core.di.CoreComponentProvider
 import com.sailer.core.di.DaggerCoreComponent
 import com.sailer.sailer.BuildConfig
+import com.sailer.sailer.di.AppComponent
+import com.sailer.sailer.di.DaggerAppComponent
 import timber.log.Timber
 
 /**
@@ -17,29 +19,21 @@ class SailerApp : Application(), CoreComponentProvider {
         DaggerCoreComponent.factory().create(this)
     }
 
-    override fun onCreate() {
-        super.onCreate()
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
+    val appComponent: AppComponent by lazy {
+        val authComponent = DaggerAuthComponent.factory()
+            .create(coreComponent = provideCoreComponent())
 
-            setupStrictMode()
-        }
+        DaggerAppComponent.factory()
+            .create(coreComponent = coreComponent, authComponent = authComponent)
     }
 
-    private fun setupStrictMode() {
-        StrictMode.setThreadPolicy(
-            StrictMode.ThreadPolicy.Builder()
-                .detectAll()
-                .penaltyLog()
-                .build()
-        )
+    override fun onCreate() {
+        super.onCreate()
+        appComponent.inject(this)
 
-        StrictMode.setVmPolicy(
-            StrictMode.VmPolicy.Builder()
-                .detectAll()
-                .penaltyLog()
-                .build()
-        )
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
     override fun provideCoreComponent(): CoreComponent {

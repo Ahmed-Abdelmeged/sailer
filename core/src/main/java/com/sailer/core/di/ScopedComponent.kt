@@ -1,5 +1,6 @@
 package com.sailer.core.di
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
@@ -38,6 +39,16 @@ fun <T> ViewModelStoreOwner.scopedComponent(
     componentProvider: () -> T
 ): Lazy<T> {
     return ScopedComponentProperty(this, componentProvider)
+}
+
+/**
+ * Get the Activity component.
+ */
+@Suppress("UNCHECKED_CAST")
+fun <T> Fragment.activityScopedComponent(): T {
+    val viewModels = ViewModelProvider(requireActivity())
+    val componentHolder = viewModels.get(ScopedComponentHolder::class.java)
+    return componentHolder.component as T
 }
 
 private class ScopedComponentHolder<T> constructor(val component: T) : ViewModel()

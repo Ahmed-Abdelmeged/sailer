@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navHost"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:name="com.sailer.rider.presentation.navigation.RiderNavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"

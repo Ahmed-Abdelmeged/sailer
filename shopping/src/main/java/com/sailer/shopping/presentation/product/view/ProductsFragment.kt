@@ -5,29 +5,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.navArgs
 import com.sailer.core.base.view.BaseFragment
 import com.sailer.core.extension.exhaustive
-import com.sailer.core.extension.hostedViewModel
 import com.sailer.core.extension.launchInternetSettingPanel
 import com.sailer.core.extension.shortSnackbar
+import com.sailer.core.extension.viewModelWithProvider
 import com.sailer.shopping.R
 import com.sailer.shopping.databinding.FragmentProductsBinding
 import com.sailer.shopping.presentation.product.viewmodel.ProductsViewModel
 import com.sailer.shopping.presentation.product.viewstate.ProductsViewAction
 import com.sailer.shopping.presentation.product.viewstate.ProductsViewEvent
 import com.sailer.shopping.presentation.product.viewstate.ProductsViewState
+import javax.inject.Inject
+import javax.inject.Provider
 
 /**
  * Created by Ahmed Abd-Elmeged on 5/18/20.
  */
-class ProductsFragment : BaseFragment<
+class ProductsFragment @Inject constructor(
+    private val viewModelProvider: Provider<ProductsViewModel.Factory>
+) : BaseFragment<
         ProductsViewState,
         ProductsViewEvent,
         ProductsViewAction,
         ProductsViewModel,
         FragmentProductsBinding>() {
 
-    override val viewModel: ProductsViewModel by hostedViewModel()
+    private val args: ProductsFragmentArgs by navArgs()
+
+    override val viewModel: ProductsViewModel by viewModelWithProvider {
+        viewModelProvider.get().create(selectedCategoryId = args.categoryId)
+    }
 
     override val theme: Int = R.style.AppTheme
 

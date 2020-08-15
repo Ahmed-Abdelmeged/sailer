@@ -13,7 +13,5 @@ interface FeatureNavigator {
 
     fun rider(): Intent
 
-    fun shopping(categoryId: Long): Intent
-
     fun auth(): Intent
 }

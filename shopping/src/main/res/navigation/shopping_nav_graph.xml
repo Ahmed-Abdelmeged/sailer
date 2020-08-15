@@ -7,6 +7,16 @@
     tools:ignore="UnusedNavigation">
 
     <fragment
+        android:id="@+id/shoppingFragment"
+        android:name="com.sailer.shopping.presentation.view.ShoppingHostFragment"
+        android:label="ShoppingHostFragment"
+        tools:layout="@layout/fragment_shopping_host">
+        <argument
+            android:name="categoryId"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
         android:id="@+id/productsFragment"
         android:name="com.sailer.shopping.presentation.product.view.ProductsFragment"
         android:label="ProductsFragment"

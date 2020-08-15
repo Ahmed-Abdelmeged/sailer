@@ -2,9 +2,9 @@ package com.sailer.core.navigation
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 
 /**
  * Created by Ahmed Abd-Elmeged on 5/5/20.
@@ -13,24 +13,28 @@ abstract class Coordinator(val featureNavigator: FeatureNavigator) {
 
     var navController: NavController? = null
 
-    var activity: AppCompatActivity? = null
+    var activity: FragmentActivity? = null
 
-    abstract fun onCreateViewModelFactory(screen: Displayable): ViewModelProvider.Factory
+    var navHostFragment: NavHostFragment? = null
 
-    abstract fun onEvent(event: Any)
+    abstract fun onEvent(event: Any): Boolean
 
-    fun back() {
-        if (navController?.popBackStack() == false) {
-            activity?.onBackPressed()
+    abstract fun onStart(): StartDestination
+
+    fun finishWithResult(resultIntent: Intent?) {
+        activity?.setResult(Activity.RESULT_OK, resultIntent)
+        activity?.finish()
+    }
+
+    fun registerNavigationListener(listener: (Int) -> Unit) {
+        navController?.addOnDestinationChangedListener { _, destination, _ ->
+            listener.invoke(destination.id)
         }
     }
 
-    fun finish() {
-        activity?.finish()
-    }
-
-    fun finishWithResult(resultIntent: Intent) {
-        activity?.setResult(Activity.RESULT_OK, resultIntent)
-        activity?.finish()
+    fun clear() {
+        navController = null
+        activity = null
+        navHostFragment = null
     }
 }

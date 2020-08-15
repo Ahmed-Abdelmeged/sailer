@@ -1,15 +1,12 @@
 package com.sailer.rider.presentation.navigation
 
-import androidx.lifecycle.ViewModelProvider
 import com.sailer.core.di.scopes.AppScope
 import com.sailer.core.navigation.Coordinator
-import com.sailer.core.navigation.Displayable
 import com.sailer.core.navigation.FeatureNavigator
+import com.sailer.core.navigation.GlobalCoordinatorEvent
 import com.sailer.core.navigation.StartDestination
 import com.sailer.rider.R
-import com.sailer.rider.presentation.home.view.HomeFragment
-import com.sailer.rider.presentation.home.viewmodel.HomeViewModelFactory
-import dagger.Lazy
+import com.sailer.shopping.presentation.view.ShoppingHostFragmentArgs
 import javax.inject.Inject
 
 /**
@@ -17,30 +14,25 @@ import javax.inject.Inject
  */
 @AppScope
 class RiderCoordinator @Inject constructor(
-    featureNavigator: FeatureNavigator,
-    private val homeViewModelFactory: Lazy<HomeViewModelFactory.Factory>
+    featureNavigator: FeatureNavigator
 ) : Coordinator(featureNavigator) {
 
-    fun start(): StartDestination {
+    override fun onStart(): StartDestination {
         return StartDestination(destination = R.id.homeFragment)
     }
 
-    override fun onCreateViewModelFactory(screen: Displayable): ViewModelProvider.Factory {
-        return when (screen) {
-            is HomeFragment -> homeViewModelFactory.get().create()
-
-            else -> throw IllegalArgumentException("Not supported fragment for the current coordinator")
-        }
-    }
-
-    override fun onEvent(event: Any) {
+    override fun onEvent(event: Any): Boolean {
         when (event) {
+            is GlobalCoordinatorEvent.Back -> if (navController?.popBackStack() == false) {
+                activity?.finish()
+            }
             is RiderCoordinatorEvent.Shopping -> shopping()
-            is RiderCoordinatorEvent.Back -> back()
         }
+        return true
     }
 
     private fun shopping() {
-        activity?.startActivity(featureNavigator.shopping(50))
+        val args = ShoppingHostFragmentArgs(categoryId = 1).toBundle()
+        navController?.navigate(R.id.shoppingFragment, args)
     }
 }

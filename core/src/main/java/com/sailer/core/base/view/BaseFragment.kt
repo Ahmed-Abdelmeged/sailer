@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
 import com.sailer.core.base.viewmodel.BaseViewModel
 import com.sailer.core.event.EventObserver
+import com.sailer.core.extension.getCoordinatorHost
 import com.sailer.core.extension.hideKeyboard
 import com.sailer.core.navigation.Coordinator
 import com.sailer.core.navigation.CoordinatorHost
@@ -63,7 +64,9 @@ abstract class BaseFragment<
         viewModel.viewEvent.observe(viewLifecycleOwner, EventObserver { renderViewEvent(it) })
 
         viewModel.coordinatorEvent.observe(viewLifecycleOwner, EventObserver {
-            getCoordinator().onEvent(it)
+            if (!getCoordinatorHost().coordinator.onEvent(it)) {
+                getActivityCoordinator().onEvent(it)
+            }
         })
     }
 
@@ -79,7 +82,7 @@ abstract class BaseFragment<
         setOnClickListener { postAction(action) }
     }
 
-    private fun getCoordinator(): Coordinator {
+    private fun getActivityCoordinator(): Coordinator {
         return (requireActivity() as CoordinatorHost<*>).coordinator
     }
 

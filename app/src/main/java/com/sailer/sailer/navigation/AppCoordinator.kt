@@ -1,10 +1,9 @@
 package com.sailer.sailer.navigation
 
-import androidx.lifecycle.ViewModelProvider
 import com.sailer.auth.domain.usecase.GetLoginStatusUseCase
 import com.sailer.core.navigation.Coordinator
-import com.sailer.core.navigation.Displayable
 import com.sailer.core.navigation.FeatureNavigator
+import com.sailer.core.navigation.StartDestination
 import com.sailer.sailer.BuildConfig
 import javax.inject.Inject
 
@@ -16,17 +15,11 @@ class AppCoordinator @Inject constructor(
     private val getLoginStatusUseCase: GetLoginStatusUseCase
 ) : Coordinator(featureNavigator) {
 
-    override fun onCreateViewModelFactory(screen: Displayable): ViewModelProvider.Factory {
-        TODO("Not yet implemented")
+    override fun onStart(): StartDestination {
+        throw IllegalArgumentException("App coordinator navigate to activities only")
     }
 
-    override fun onEvent(event: Any) {
-        when (event) {
-            is AppCoordinatorEvent.Start -> start()
-        }
-    }
-
-    private fun start() {
+    fun start() {
         val loginStatus = getLoginStatusUseCase.execute()
         val intent = if (loginStatus.isLoggedIn) {
             when (BuildConfig.FLAVOR) {
@@ -39,5 +32,9 @@ class AppCoordinator @Inject constructor(
         }
         activity?.finish()
         activity?.startActivity(intent)
+    }
+
+    override fun onEvent(event: Any): Boolean {
+        return true
     }
 }

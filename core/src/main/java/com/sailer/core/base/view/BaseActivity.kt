@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.annotation.IdRes
 import androidx.annotation.NavigationRes
+import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -21,6 +22,9 @@ abstract class BaseActivity<VB : ViewBinding, C : Coordinator> : AppCompatActivi
     lateinit var binding: VB
         private set
 
+    @get:StyleRes
+    protected abstract val theme: Int
+
     @get:NavigationRes
     abstract val graph: Int
 
@@ -31,26 +35,22 @@ abstract class BaseActivity<VB : ViewBinding, C : Coordinator> : AppCompatActivi
 
     abstract fun onCreateBinding(inflater: LayoutInflater): VB
 
-    abstract fun onStartDestination(): StartDestination
-
-    protected open val hostView = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(theme)
         onPerformInjection()
+
         super.onCreate(savedInstanceState)
+
         binding = onCreateBinding(layoutInflater)
         setContentView(binding.root)
 
+        coordinator.navController = findNavController(navHostId)
         coordinator.activity = this
-        if (hostView) {
-            coordinator.navController = findNavController(navHostId)
 
-            setupNavigationGraph(
-                graphId = graph,
-                host = supportFragmentManager.findFragmentById(navHostId) as NavHostFragment,
-                startDestination = onStartDestination()
-            )
-        }
+        val host = supportFragmentManager.findFragmentById(navHostId) as NavHostFragment
+        coordinator.navHostFragment = host
+
+        setupNavigationGraph(graphId = graph, host = host, startDestination = coordinator.onStart())
     }
 
     private fun setupNavigationGraph(
@@ -70,7 +70,6 @@ abstract class BaseActivity<VB : ViewBinding, C : Coordinator> : AppCompatActivi
 
     override fun onDestroy() {
         super.onDestroy()
-        coordinator.activity = null
-        coordinator.navController = null
+        coordinator.clear()
     }
 }

@@ -10,6 +10,4 @@ sealed class DriverCoordinatorEvent : CoordinatorEvent {
     object Logout : DriverCoordinatorEvent()
 
     object Map : DriverCoordinatorEvent()
-
-    object Back : DriverCoordinatorEvent()
 }

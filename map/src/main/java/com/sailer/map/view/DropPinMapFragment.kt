@@ -8,8 +8,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.sailer.core.base.view.BaseFragment
 import com.sailer.core.extension.exhaustive
-import com.sailer.core.extension.hostedViewModel
 import com.sailer.core.extension.shortSnackbar
+import com.sailer.core.extension.viewModelWithProvider
 import com.sailer.map.R
 import com.sailer.map.databinding.FragmentDropPinMapBinding
 import com.sailer.map.model.Location
@@ -17,18 +17,22 @@ import com.sailer.map.viewmodel.DropPinMapViewModel
 import com.sailer.map.viewstate.DropPinMapViewAction
 import com.sailer.map.viewstate.DropPinMapViewEvent
 import com.sailer.map.viewstate.DropPinMapViewState
+import javax.inject.Inject
+import javax.inject.Provider
 
 /**
  * Created by Ahmed Abd-Elmeged on 6/10/20.
  */
-class DropPinMapFragment : BaseFragment<
+class DropPinMapFragment @Inject constructor(
+    private val viewModelProvider: Provider<DropPinMapViewModel>
+) : BaseFragment<
         DropPinMapViewState,
         DropPinMapViewEvent,
         DropPinMapViewAction,
         DropPinMapViewModel,
         FragmentDropPinMapBinding>() {
 
-    override val viewModel: DropPinMapViewModel by hostedViewModel()
+    override val viewModel: DropPinMapViewModel by viewModelWithProvider { viewModelProvider.get() }
 
     override val theme: Int = R.style.AppTheme
 
@@ -45,11 +49,7 @@ class DropPinMapFragment : BaseFragment<
         binding.confirmButton.postClickAction(DropPinMapViewAction.ConfirmDropPin)
 
         //Get the location from Google map
-        postAction(
-            DropPinMapViewAction.DropPinLocation(
-                Location(latitude = 0f, longitude = 0f)
-            )
-        )
+        postAction(DropPinMapViewAction.DropPinLocation(Location(latitude = 0f, longitude = 0f)))
     }
 
     override fun renderViewState(viewState: DropPinMapViewState) {

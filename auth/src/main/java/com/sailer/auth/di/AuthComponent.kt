@@ -14,9 +14,8 @@ interface AuthComponent {
 
     fun provideGetLoginStatusUseCase(): GetLoginStatusUseCase
 
-    @Component.Builder
-    interface Builder {
-        fun coreComponent(coreComponent: CoreComponent): Builder
-        fun build(): AuthComponent
+    @Component.Factory
+    interface Factory {
+        fun create(coreComponent: CoreComponent): AuthComponent
     }
 }
