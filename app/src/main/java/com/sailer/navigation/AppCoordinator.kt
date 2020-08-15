@@ -1,4 +1,4 @@
-package com.sailer.sailer.navigation
+package com.sailer.navigation
 
 import com.sailer.auth.domain.usecase.GetLoginStatusUseCase
 import com.sailer.core.navigation.Coordinator

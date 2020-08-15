@@ -1,4 +1,4 @@
-package com.sailer.sailer
+package com.sailer
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry

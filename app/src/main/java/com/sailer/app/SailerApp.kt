@@ -1,4 +1,4 @@
-package com.sailer.sailer.app
+package com.sailer.app
 
 import android.app.Application
 import com.sailer.auth.di.DaggerAuthComponent
@@ -6,8 +6,8 @@ import com.sailer.core.di.CoreComponent
 import com.sailer.core.di.CoreComponentProvider
 import com.sailer.core.di.DaggerCoreComponent
 import com.sailer.sailer.BuildConfig
-import com.sailer.sailer.di.AppComponent
-import com.sailer.sailer.di.DaggerAppComponent
+import com.sailer.di.AppComponent
+import com.sailer.di.DaggerAppComponent
 import timber.log.Timber
 
 /**

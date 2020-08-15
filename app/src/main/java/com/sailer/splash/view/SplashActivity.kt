@@ -1,9 +1,9 @@
-package com.sailer.sailer.splash.view
+package com.sailer.splash.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.sailer.sailer.app.SailerApp
-import com.sailer.sailer.navigation.AppCoordinator
+import com.sailer.app.SailerApp
+import com.sailer.navigation.AppCoordinator
 import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity() {

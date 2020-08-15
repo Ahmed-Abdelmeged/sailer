@@ -1,4 +1,4 @@
-package com.sailer.sailer
+package com.sailer
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

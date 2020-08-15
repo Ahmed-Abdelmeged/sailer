@@ -1,10 +1,10 @@
-package com.sailer.sailer.di
+package com.sailer.di
 
 import com.sailer.auth.di.AuthComponent
 import com.sailer.core.di.CoreComponent
 import com.sailer.core.di.scopes.AppScope
-import com.sailer.sailer.app.SailerApp
-import com.sailer.sailer.splash.view.SplashActivity
+import com.sailer.app.SailerApp
+import com.sailer.splash.view.SplashActivity
 import dagger.Component
 
 /**
